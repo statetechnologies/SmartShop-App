@@ -43,6 +43,8 @@ dependencies:
   flutter_staggered_animations:
   flutter_spinkit:
   http:
+  provider:
+  modal_progress_hud_nsn:
 
 dev_dependencies:
   flutter_test:

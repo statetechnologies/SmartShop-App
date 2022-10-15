@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_shop/constants/theme.dart';
-
 import '../pages/ProductPage.dart';
 import '../pages/SalesPage.dart';
 import '../pages/TypePage.dart';
 import '../pages/homepage.dart';
+import 'package:smart_shop/services/tokenAPI.dart';
 
 class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer({
@@ -14,6 +14,7 @@ class NavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(session.elementAt(0).username);
     return Drawer(
       elevation: 8,
       backgroundColor: Get.isDarkMode ? primary3DarkMode : primary2,
@@ -52,7 +53,7 @@ class NavigationDrawer extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                'Username',
+                session.first.username,
                 style: subNavHeadingStyle.copyWith(fontSize: 20),
               ),
               SizedBox(

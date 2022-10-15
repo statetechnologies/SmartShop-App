@@ -5,8 +5,8 @@ import 'package:smart_shop/constants/theme.dart';
 class ProductTiles extends StatelessWidget {
   final int index;
   final String? Name;
-  final double? price;
-  final int? quantity;
+  final price;
+  final quantity;
   const ProductTiles(
       {Key? key, required this.index, this.Name, this.price, this.quantity})
       : super(key: key);
@@ -52,7 +52,7 @@ class ProductTiles extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      'Price is ${price!.toStringAsFixed(2)}/=',
+                      'Price is ${price!}/=',
                       style: subText.copyWith(fontSize: 15.0),
                     ),
                     Text(

@@ -6,8 +6,8 @@ import '../widgets/NavDrawer.dart';
 import '../widgets/buttons.dart';
 import 'Profile.dart';
 import 'package:smart_shop/models/TypeFile.dart';
-
 import 'login.dart';
+import 'package:smart_shop/services/tokenAPI.dart';
 
 Data dataFile = Data();
 
@@ -110,6 +110,7 @@ class _TypePageState extends State<TypePage> {
                 });
                 if (value == 'Log Out') {
                   Get.to(() => LoginPage());
+                  session.clear();
                 } else if (value == 'My Profile') {
                   Get.to(() => ProfilePage());
                 }

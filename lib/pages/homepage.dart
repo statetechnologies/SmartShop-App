@@ -7,20 +7,18 @@ import 'package:smart_shop/widgets/tiles.dart';
 import 'package:smart_shop/widgets/productTile.dart';
 import '../widgets/NavDrawer.dart';
 import 'Profile.dart';
-import 'package:smart_shop/models/ProductsFile.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
-Data dataFile = Data();
+import 'package:smart_shop/services/tokenAPI.dart';
+import 'package:smart_shop/services/productAPI.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   List<String> _selectAction = ['My Profile', 'Log Out'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,11 +45,12 @@ class _HomePageState extends State<HomePage> {
             height: 10,
           ),
           Tiles(
-              icon: Icons.insert_drive_file_outlined,
-              Iconcolor: svn,
-              label: 'Available Products',
-              value: 10000.00,
-              currency: 'Tsh'),
+            icon: Icons.insert_drive_file_outlined,
+            Iconcolor: svn,
+            label: 'Available Products',
+            value: 4,
+            currency: '',
+          ),
           SizedBox(
             height: 10,
           ),
@@ -59,8 +58,8 @@ class _HomePageState extends State<HomePage> {
               icon: Icons.insert_drive_file_outlined,
               Iconcolor: icon3,
               label: 'Types of Available Products',
-              value: 10000.00,
-              currency: 'Tsh'),
+              value: 3,
+              currency: ''),
           SizedBox(
             height: 10,
           ),
@@ -74,7 +73,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: AnimationLimiter(
               child: ListView.builder(
-                  itemCount: dataFile.productLenght,
+                  itemCount: 4,
                   itemBuilder: (context, index) {
                     return AnimationConfiguration.staggeredList(
                       position: index,
@@ -82,11 +81,9 @@ class _HomePageState extends State<HomePage> {
                       child: FadeInAnimation(
                         child: ProductTiles(
                             index: index,
-                            Name: dataFile.product.elementAt(index).Productname,
-                            price:
-                                dataFile.product.elementAt(index).Productprice,
-                            quantity:
-                                dataFile.product.elementAt(index).quantity),
+                            Name: getproductName(index).toString(),
+                            price: getPrice(index),
+                            quantity: getQuantity(index)),
                       ),
                     );
                   }),
@@ -141,6 +138,7 @@ class _HomePageState extends State<HomePage> {
                 });
                 if (value == 'Log Out') {
                   Get.to(() => LoginPage());
+                  session.clear();
                 } else if (value == 'My Profile') {
                   Get.to(() => ProfilePage());
                 }

@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:smart_shop/services/tokenAPI.dart';
 
 var headers = {
   'Authorization':
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY1NjU5MjQwLCJpYXQiOjE2NjU1NzI4NDAsImp0aSI6IjU3YmYwMTU1NzRlZDRhNjM4MWMzZjNiMWIzMzE4Y2Q2IiwidXNlcl9pZCI6MX0.R92EKHNb7fcQdcWnZCs5HN_eQOif6L5jk5HnizV26BA',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY1OTYxNzIwLCJpYXQiOjE2NjU4NzUzMjAsImp0aSI6ImQ3MTM4NTFhNDE1YjRhYmY5ZmZmN2FlY2IwMDY0ZGI1IiwidXNlcl9pZCI6MX0.I7ovdCblN_VQ_ovM0t-6JvdzRHdUe7lE4wkblybXLvI',
   'Cookie':
       'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
 };
-void getProducts() async {
+var productData;
+
+Future<dynamic> getProducts() async {
   var request = http.Request(
       'GET', Uri.parse('https://smartshop.mrshanas.com/api/products/'));
 
@@ -15,7 +20,10 @@ void getProducts() async {
   http.StreamedResponse response = await request.send();
 
   if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
+    String data = await response.stream.bytesToString();
+    productData = await jsonDecode(data);
+    print(productData);
+    return productData;
   } else {
     print(response.reasonPhrase);
   }
@@ -39,4 +47,30 @@ void addProduct(
   } else {
     print(response.reasonPhrase);
   }
+}
+
+getproductName(index) {
+  return productData[index]['name'];
+}
+
+String printName(index) {
+  return getproductName(index).toString();
+}
+
+getPrice(index) {
+  double price = double.parse(productData[index]['price']);
+  return price;
+}
+
+printPrice(index) async {
+  return await getPrice(index);
+}
+
+getQuantity(index) {
+  int quantity = productData[index]['quantity'];
+  return quantity;
+}
+
+printQuantity(index) async {
+  return await getQuantity(index);
 }

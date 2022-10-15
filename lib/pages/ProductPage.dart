@@ -6,12 +6,10 @@ import '../widgets/NavDrawer.dart';
 import '../widgets/buttons.dart';
 import '../widgets/productTile.dart';
 import 'Profile.dart';
-import 'package:smart_shop/models/ProductsFile.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
+import 'package:smart_shop/services/tokenAPI.dart';
+import 'package:smart_shop/services/productAPI.dart';
 import 'login.dart';
-
-Data dataFile = Data();
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -115,6 +113,7 @@ class _ProductPageState extends State<ProductPage> {
                 });
                 if (value == 'Log Out') {
                   Get.to(() => LoginPage());
+                  session.clear();
                 } else if (value == 'My Profile') {
                   Get.to(() => ProfilePage());
                 }
@@ -149,7 +148,7 @@ class _ProductPageState extends State<ProductPage> {
               child: Container(
                 child: AnimationLimiter(
                   child: ListView.builder(
-                      itemCount: dataFile.productLenght,
+                      itemCount: 4,
                       itemBuilder: (context, index) {
                         return AnimationConfiguration.staggeredList(
                           position: index,
@@ -157,14 +156,9 @@ class _ProductPageState extends State<ProductPage> {
                           child: FadeInAnimation(
                             child: ProductTiles(
                                 index: index,
-                                Name: dataFile.product
-                                    .elementAt(index)
-                                    .Productname,
-                                price: dataFile.product
-                                    .elementAt(index)
-                                    .Productprice,
-                                quantity:
-                                    dataFile.product.elementAt(index).quantity),
+                                Name: getproductName(index),
+                                price: getPrice(index),
+                                quantity: getQuantity(index)),
                           ),
                         );
                       }),
@@ -301,7 +295,7 @@ class _ProductPageState extends State<ProductPage> {
               child: Container(
                 child: AnimationLimiter(
                   child: ListView.builder(
-                      itemCount: dataFile.productLenght,
+                      itemCount: 4,
                       itemBuilder: (context, index) {
                         return AnimationConfiguration.staggeredList(
                           position: index,
@@ -309,14 +303,9 @@ class _ProductPageState extends State<ProductPage> {
                           child: FadeInAnimation(
                             child: ProductTiles(
                                 index: index,
-                                Name: dataFile.product
-                                    .elementAt(index)
-                                    .Productname,
-                                price: dataFile.product
-                                    .elementAt(index)
-                                    .Productprice,
-                                quantity:
-                                    dataFile.product.elementAt(index).quantity),
+                                Name: getproductName(index),
+                                price: getPrice(index),
+                                quantity: getQuantity(index)),
                           ),
                         );
                       }),
@@ -332,8 +321,8 @@ class _ProductPageState extends State<ProductPage> {
     if (prodName.text.isNotEmpty &&
         priceName.text.isNotEmpty &&
         quantityName.text.isNotEmpty) {
-      dataFile.addToList(prodName.text, double.parse(priceName.text),
-          int.parse(quantityName.text));
+      // dataFile.addToList(prodName.text, double.parse(priceName.text),
+      //     int.parse(quantityName.text));
     } else if (prodName.text.isEmpty ||
         priceName.text.isEmpty ||
         quantityName.text.isEmpty) {

@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:smart_shop/services/tokenAPI.dart';
 
 var headers = {
-  'Authorization':
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY1NjU5MjQwLCJpYXQiOjE2NjU1NzI4NDAsImp0aSI6IjU3YmYwMTU1NzRlZDRhNjM4MWMzZjNiMWIzMzE4Y2Q2IiwidXNlcl9pZCI6MX0.R92EKHNb7fcQdcWnZCs5HN_eQOif6L5jk5HnizV26BA',
+  'Authorization': 'Bearer ${session.first.accessKey}',
   'Cookie':
       'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
 };
-void getSales() async {
+var salesData;
+
+Future getSales() async {
   var request = http.Request(
       'GET', Uri.parse('https://smartshop.mrshanas.com/api/sales/'));
 
@@ -15,7 +19,11 @@ void getSales() async {
   http.StreamedResponse response = await request.send();
 
   if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
+    String data = await response.stream.bytesToString();
+    salesData = await jsonDecode(data);
+    print(salesData);
+
+    return jsonDecode(data);
   } else {
     print(response.reasonPhrase);
   }
@@ -36,4 +44,23 @@ void addSales({required double paid, required String product}) async {
   } else {
     print(response.reasonPhrase);
   }
+}
+
+getproductName(index) {
+  return salesData[index]['name'];
+}
+
+double getPrice(index) {
+  double price = double.parse(salesData[index]['amount_paid']);
+  return price;
+}
+
+int getQuantity(index) {
+  int quantity = salesData[index]['quantity_bought'];
+  return quantity;
+}
+
+getIncome(index) {
+  double income = double.parse(salesData[index]['income']);
+  return income;
 }

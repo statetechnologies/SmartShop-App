@@ -5,7 +5,7 @@ import 'package:smart_shop/constants/theme.dart';
 class Tiles extends StatelessWidget {
   final IconData? icon;
   final String? currency;
-  final double? value;
+  final value;
   final String? label;
   final Color? Iconcolor;
   const Tiles(
@@ -54,7 +54,7 @@ class Tiles extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      currency! + value!.toStringAsFixed(2),
+                      currency! + value!.toString(),
                       style: titleStyle.copyWith(fontSize: 20),
                     ),
                     SizedBox(

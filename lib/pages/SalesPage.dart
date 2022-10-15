@@ -8,6 +8,7 @@ import '../widgets/salesTile.dart';
 import 'Profile.dart';
 import 'package:smart_shop/models/SalesFile.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:smart_shop/services/tokenAPI.dart';
 import 'login.dart';
 
 Data dataFile = Data();
@@ -114,6 +115,7 @@ class _SalesPageState extends State<SalesPage> {
                 });
                 if (value == 'Log Out') {
                   Get.to(() => LoginPage());
+                  session.clear();
                 } else if (value == 'My Profile') {
                   Get.to(() => ProfilePage());
                 }

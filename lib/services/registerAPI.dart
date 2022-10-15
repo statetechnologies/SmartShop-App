@@ -1,14 +1,15 @@
 import 'package:http/http.dart' as http;
 
+var headers = {
+  'Authorization': 'mykey',
+  'Cookie':
+      'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
+};
 void register(
     {required String username,
     email,
     required String password1,
     required String password2}) async {
-  var headers = {
-    'Cookie':
-        'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
-  };
   var request = http.MultipartRequest(
       'POST', Uri.parse('https://smartshop.mrshanas.com/api/auth/register/'));
 
@@ -30,10 +31,6 @@ void register(
 }
 
 void resendEmailVerify({email}) async {
-  var headers = {
-    'Cookie':
-        'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
-  };
   var request = http.MultipartRequest(
       'POST',
       Uri.parse(
@@ -52,10 +49,6 @@ void resendEmailVerify({email}) async {
 }
 
 void verifyEmail({key}) async {
-  var headers = {
-    'Cookie':
-        'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
-  };
   var request = http.MultipartRequest(
       'POST',
       Uri.parse(

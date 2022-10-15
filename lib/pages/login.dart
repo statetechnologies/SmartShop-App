@@ -4,6 +4,10 @@ import 'package:smart_shop/constants/theme.dart';
 import 'package:smart_shop/services/theme_service.dart';
 import 'package:smart_shop/widgets/buttons.dart';
 import 'homepage.dart';
+import 'package:smart_shop/services/tokenAPI.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+import 'loading_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,6 +17,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool showProgress = false;
+  Token token = Token();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController RegemailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -41,24 +47,27 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.theme.backgroundColor,
-      appBar: _appBar(),
-      body: _pageContent(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: true,
-        showUnselectedLabels: false,
-        selectedLabelStyle: subHeadingStyle,
-        backgroundColor:
-            Get.isDarkMode ? primary3DarkTiles : primary3LightTiles,
-        unselectedItemColor: Get.isDarkMode ? null : bodyDark,
-        selectedItemColor: Get.isDarkMode ? bodyLight1 : primary2Dark,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        iconSize: 40,
-        onTap: _onItemTapped,
-        elevation: 4,
-        items: bottomNav,
+    return ModalProgressHUD(
+      inAsyncCall: showProgress,
+      child: Scaffold(
+        backgroundColor: context.theme.backgroundColor,
+        appBar: _appBar(),
+        body: _pageContent(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          showSelectedLabels: true,
+          showUnselectedLabels: false,
+          selectedLabelStyle: subHeadingStyle,
+          backgroundColor:
+              Get.isDarkMode ? primary3DarkTiles : primary3LightTiles,
+          unselectedItemColor: Get.isDarkMode ? null : bodyDark,
+          selectedItemColor: Get.isDarkMode ? bodyLight1 : primary2Dark,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          iconSize: 40,
+          onTap: _onItemTapped,
+          elevation: 4,
+          items: bottomNav,
+        ),
       ),
     );
   }
@@ -93,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       if (emailController.text == 'email' &&
           passwordController.text == 'password') {
-        Get.to(() => const HomePage());
+        Get.to(() => HomePage());
       }
     } else if (emailController.text.isEmpty ||
         passwordController.text.isEmpty) {
@@ -114,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
         usernameController.text.isNotEmpty) {
       if (RegemailController.text == 'email' &&
           RegpasswordController.text == 'password') {
-        Get.to(() => const HomePage());
+        Get.to(() => HomePage());
       }
     } else if (RegemailController.text.isEmpty ||
         RegpasswordController.text.isEmpty) {
@@ -132,85 +141,100 @@ class _LoginPageState extends State<LoginPage> {
   _pageContent(int index) {
     switch (index) {
       case 0:
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Welcome to SmartShop!',
-                style: headingStyle,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Login to your Shop Account',
-                style: subText,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Get.isDarkMode
-                        ? primary3Container
-                        : primary3LightTiles),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextFormField(
-                        controller: emailController,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.email),
-                            hintText: 'Email Address',
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            focusColor: Colors.blueAccent),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
-                        controller: passwordController,
-                        obscureText: true,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.password_rounded),
-                            hintText: 'Password',
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            focusColor: Colors.blueAccent),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      CustomButton(
-                        color: secondary1Dark,
-                        label: 'Login',
-                        icon: Icons.navigate_next,
-                        onTap: () {
-                          _validateLogin();
-                        },
-                      ),
-                    ],
+        if (session.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Welcome to SmartShop!',
+                  style: headingStyle,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Login to your Shop Account',
+                  style: subText,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Get.isDarkMode
+                          ? primary3Container
+                          : primary3LightTiles),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextFormField(
+                          controller: emailController,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.email),
+                              hintText: 'Email Address',
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              focusColor: Colors.blueAccent),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        TextFormField(
+                          controller: passwordController,
+                          obscureText: true,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.password_rounded),
+                              hintText: 'Password',
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              focusColor: Colors.blueAccent),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        CustomButton(
+                          color: secondary1Dark,
+                          label: 'Login',
+                          icon: Icons.navigate_next,
+                          onTap: () async {
+                            showProgress = true;
+
+                            await token.getToken(
+                                username: emailController.text.toString(),
+                                password: passwordController.text.toString());
+
+                            if (session.isNotEmpty) {
+                              print(session.first.accessKey);
+
+                              await Get.to(() => LoadingScreen());
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        } else {
+          Get.to(() => HomePage());
+        }
+        break;
 
       case 1:
         return Padding(
@@ -310,85 +334,98 @@ class _LoginPageState extends State<LoginPage> {
         );
 
       default:
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Welcome to SmartShop!',
-                style: headingStyle,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Login to your Shop Account',
-                style: subHeadingStyle,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Get.isDarkMode
-                        ? primary3Container
-                        : primary3LightTiles),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextFormField(
-                        controller: emailController,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.email),
-                            hintText: 'Email Address',
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            focusColor: Colors.blueAccent),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
-                        controller: passwordController,
-                        obscureText: true,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.password_rounded),
-                            hintText: 'Password',
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            focusColor: Colors.blueAccent),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      CustomButton(
-                        color: primary3DarkLogin,
-                        label: 'Login',
-                        icon: Icons.navigate_next,
-                        onTap: () {
-                          _validateLogin();
-                        },
-                      ),
-                    ],
+        if (session.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Welcome to SmartShop!',
+                  style: headingStyle,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Login to your Shop Account',
+                  style: subText,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Get.isDarkMode
+                          ? primary3Container
+                          : primary3LightTiles),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextFormField(
+                          controller: emailController,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.email),
+                              hintText: 'Email Address',
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              focusColor: Colors.blueAccent),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        TextFormField(
+                          controller: passwordController,
+                          obscureText: true,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.password_rounded),
+                              hintText: 'Password',
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              focusColor: Colors.blueAccent),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        CustomButton(
+                          color: secondary1Dark,
+                          label: 'Login',
+                          icon: Icons.navigate_next,
+                          onTap: () async {
+                            await token.getToken(
+                                username: emailController.text.toString(),
+                                password: passwordController.text.toString());
+                            bool? new1 = await showProgress;
+                            print(new1.toString());
+
+                            if (session.isNotEmpty) {
+                              Get.to(() => HomePage());
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        } else {
+          Get.to(() => HomePage());
+        }
+        break;
     }
   }
 }
