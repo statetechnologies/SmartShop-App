@@ -19,11 +19,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool showProgress = false;
   Token token = Token();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController RegemailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController RegpasswordController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController regUsernameController = TextEditingController();
   int _selectedIndex = 0;
   List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
@@ -99,12 +99,13 @@ class _LoginPageState extends State<LoginPage> {
       );
 
   _validateLogin() {
-    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      if (emailController.text == 'email' &&
+    if (usernameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty) {
+      if (usernameController.text == 'email' &&
           passwordController.text == 'password') {
         Get.to(() => HomePage());
       }
-    } else if (emailController.text.isEmpty ||
+    } else if (usernameController.text.isEmpty ||
         passwordController.text.isEmpty) {
       Get.snackbar('Required', 'All required fields must be filled',
           backgroundColor: Get.isDarkMode ? Colors.white : Colors.black,
@@ -120,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
   _validateRegistry() {
     if (RegemailController.text.isNotEmpty &&
         RegpasswordController.text.isNotEmpty &&
-        usernameController.text.isNotEmpty) {
+        regUsernameController.text.isNotEmpty) {
       if (RegemailController.text == 'email' &&
           RegpasswordController.text == 'password') {
         Get.to(() => HomePage());
@@ -174,11 +175,11 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         TextFormField(
-                          controller: emailController,
+                          controller: usernameController,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.email),
-                              hintText: 'Email Address',
+                              prefixIcon: Icon(Icons.person),
+                              hintText: 'Username',
                               border: OutlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Colors.grey, width: 1),
@@ -211,17 +212,22 @@ class _LoginPageState extends State<LoginPage> {
                           label: 'Login',
                           icon: Icons.navigate_next,
                           onTap: () async {
-                            showProgress = true;
+                            setState(() {
+                              showProgress = true;
+                            });
 
                             await token.getToken(
-                                username: emailController.text.toString(),
+                                username: usernameController.text.toString(),
                                 password: passwordController.text.toString());
 
                             if (session.isNotEmpty) {
-                              print(session.first.accessKey);
-
+                              showProgress = false;
                               await Get.to(() => LoadingScreen());
                             }
+
+                            setState(() {
+                              showProgress = showSign!;
+                            });
                           },
                         ),
                       ],
@@ -285,10 +291,10 @@ class _LoginPageState extends State<LoginPage> {
                         height: 15,
                       ),
                       TextFormField(
-                        controller: usernameController,
+                        controller: regUsernameController,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.email),
+                            prefixIcon: Icon(Icons.person),
                             hintText: 'Username',
                             border: OutlineInputBorder(
                                 borderSide:
@@ -367,11 +373,11 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         TextFormField(
-                          controller: emailController,
+                          controller: usernameController,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.email),
-                              hintText: 'Email Address',
+                              prefixIcon: Icon(Icons.person),
+                              hintText: 'Username',
                               border: OutlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Colors.grey, width: 1),
@@ -404,14 +410,16 @@ class _LoginPageState extends State<LoginPage> {
                           label: 'Login',
                           icon: Icons.navigate_next,
                           onTap: () async {
+                            showProgress = true;
+
                             await token.getToken(
-                                username: emailController.text.toString(),
+                                username: usernameController.text.toString(),
                                 password: passwordController.text.toString());
-                            bool? new1 = await showProgress;
-                            print(new1.toString());
 
                             if (session.isNotEmpty) {
-                              Get.to(() => HomePage());
+                              print(session.first.accessKey);
+
+                              await Get.to(() => LoadingScreen());
                             }
                           },
                         ),

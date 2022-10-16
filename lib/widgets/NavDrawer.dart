@@ -14,7 +14,6 @@ class NavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(session.elementAt(0).username);
     return Drawer(
       elevation: 8,
       backgroundColor: Get.isDarkMode ? primary3DarkMode : primary2,

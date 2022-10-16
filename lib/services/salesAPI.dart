@@ -21,7 +21,7 @@ Future getSales() async {
   if (response.statusCode == 200) {
     String data = await response.stream.bytesToString();
     salesData = await jsonDecode(data);
-    print(salesData);
+    print(' Sales $salesData');
 
     return jsonDecode(data);
   } else {

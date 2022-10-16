@@ -53,24 +53,12 @@ getproductName(index) {
   return productData[index]['name'];
 }
 
-String printName(index) {
-  return getproductName(index).toString();
-}
-
 getPrice(index) {
   double price = double.parse(productData[index]['price']);
   return price;
 }
 
-printPrice(index) async {
-  return await getPrice(index);
-}
-
 getQuantity(index) {
   int quantity = productData[index]['quantity'];
   return quantity;
-}
-
-printQuantity(index) async {
-  return await getQuantity(index);
 }

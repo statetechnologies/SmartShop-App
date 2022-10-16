@@ -156,7 +156,7 @@ class _ProductPageState extends State<ProductPage> {
                           child: FadeInAnimation(
                             child: ProductTiles(
                                 index: index,
-                                Name: getproductName(index),
+                                Name: getproductName(index).toString(),
                                 price: getPrice(index),
                                 quantity: getQuantity(index)),
                           ),

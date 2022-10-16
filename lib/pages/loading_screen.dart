@@ -32,7 +32,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: SpinKitWanderingCubes(
+          child: SpinKitPouringHourGlassRefined(
         color: Colors.blue,
         size: 100.0,
       )),

@@ -6,9 +6,10 @@ import '../pages/homepage.dart';
 import 'Sessions.dart';
 
 List<Session> session = [];
-bool? showProgress;
+bool? showSign;
 
 var accessKeys;
+String? goPage;
 
 class Token extends ChangeNotifier {
   Future getToken({required String username, required String password}) async {
@@ -41,7 +42,7 @@ class Token extends ChangeNotifier {
 
       notifyListeners();
 
-      showProgress = false;
+      showSign = false;
 
       return jsonDecode(data);
     } else {
@@ -53,6 +54,8 @@ class Token extends ChangeNotifier {
             color: Get.isDarkMode ? Colors.red : Colors.yellowAccent,
           ),
           snackPosition: SnackPosition.BOTTOM);
+      goPage = await response.reasonPhrase;
+      showSign = false;
       print('Reason is ${response.reasonPhrase}');
     }
   }
