@@ -8,6 +8,7 @@ import 'Profile.dart';
 import 'package:smart_shop/models/TypeFile.dart';
 import 'login.dart';
 import 'package:smart_shop/services/tokenAPI.dart';
+import 'package:smart_shop/services/categoryAPI.dart';
 
 Data dataFile = Data();
 
@@ -46,7 +47,7 @@ class _TypePageState extends State<TypePage> {
     return Scaffold(
       drawer: const NavigationDrawer(),
       backgroundColor: context.theme.backgroundColor,
-      appBar: _appBar(),
+      appBar: _appBar(context),
       body: _pageContent(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: true,
@@ -66,7 +67,7 @@ class _TypePageState extends State<TypePage> {
     );
   }
 
-  _appBar() => AppBar(
+  _appBar(BuildContext context) => AppBar(
         toolbarHeight: 110,
         elevation: 2,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,
@@ -109,10 +110,21 @@ class _TypePageState extends State<TypePage> {
                   //TODO: add a log out and profile function
                 });
                 if (value == 'Log Out') {
-                  Get.to(() => LoginPage());
+                  Future.delayed(Duration.zero, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        (route) => false);
+                  });
+
+                  //  Get.to(() => LoginPage());
                   session.clear();
                 } else if (value == 'My Profile') {
-                  Get.to(() => ProfilePage());
+                  Future.delayed(Duration.zero, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                        (route) => false);
+                  });
+                  // Get.to(() => ProfilePage());
                 }
               },
             ),
@@ -132,7 +144,7 @@ class _TypePageState extends State<TypePage> {
             height: 220,
             child: PageView.builder(
                 controller: PageController(viewportFraction: 0.88),
-                itemCount: dataFile.typeLenght,
+                itemCount: getTypeLength(),
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     child: Container(
@@ -142,12 +154,14 @@ class _TypePageState extends State<TypePage> {
                       margin: EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30.0),
-                          color: Colors.blueGrey),
+                          color: Get.isDarkMode
+                              ? primary3DarkTiles
+                              : primary3LightTiles),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            dataFile.type.elementAt(index).type,
+                            getCategoryName(index),
                             style: headingStyle.copyWith(fontSize: 32),
                           ),
                           SizedBox(

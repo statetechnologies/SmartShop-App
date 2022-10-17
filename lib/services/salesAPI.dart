@@ -8,7 +8,7 @@ var headers = {
   'Cookie':
       'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
 };
-var salesData;
+var salesData, length;
 
 Future getSales() async {
   var request = http.Request(
@@ -21,9 +21,12 @@ Future getSales() async {
   if (response.statusCode == 200) {
     String data = await response.stream.bytesToString();
     salesData = await jsonDecode(data);
+
+    final lengths = salesData.length;
+    print('Sales length is $lengths');
     print(' Sales $salesData');
 
-    return jsonDecode(data);
+    return salesData;
   } else {
     print(response.reasonPhrase);
   }
@@ -63,4 +66,9 @@ int getQuantity(index) {
 getIncome(index) {
   double income = double.parse(salesData[index]['income']);
   return income;
+}
+
+int getSalesLength() {
+  length = salesData.length;
+  return length;
 }

@@ -5,6 +5,7 @@ import 'package:smart_shop/pages/login.dart';
 import 'package:smart_shop/services/theme_service.dart';
 import 'package:smart_shop/widgets/tiles.dart';
 import 'package:smart_shop/widgets/productTile.dart';
+import '../services/categoryAPI.dart';
 import '../widgets/NavDrawer.dart';
 import 'Profile.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: const NavigationDrawer(),
       backgroundColor: context.theme.backgroundColor,
-      appBar: _appBar(),
+      appBar: _appBar(context),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
             icon: Icons.insert_drive_file_outlined,
             Iconcolor: svn,
             label: 'Available Products',
-            value: 4,
+            value: getProductLength(),
             currency: '',
           ),
           SizedBox(
@@ -58,7 +59,7 @@ class _HomePageState extends State<HomePage> {
               icon: Icons.insert_drive_file_outlined,
               Iconcolor: icon3,
               label: 'Types of Available Products',
-              value: 3,
+              value: getTypeLength(),
               currency: ''),
           SizedBox(
             height: 10,
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: AnimationLimiter(
               child: ListView.builder(
-                  itemCount: 4,
+                  itemCount: getProductLength(),
                   itemBuilder: (context, index) {
                     return AnimationConfiguration.staggeredList(
                       position: index,
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _appBar() => AppBar(
+  _appBar(BuildContext context) => AppBar(
         toolbarHeight: 110,
         elevation: 2,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,
@@ -137,10 +138,21 @@ class _HomePageState extends State<HomePage> {
                   //TODO: add a log out and profile function
                 });
                 if (value == 'Log Out') {
-                  Get.to(() => LoginPage());
+                  Future.delayed(Duration.zero, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        (route) => false);
+                  });
+
+                  //  Get.to(() => LoginPage());
                   session.clear();
                 } else if (value == 'My Profile') {
-                  Get.to(() => ProfilePage());
+                  Future.delayed(Duration.zero, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                        (route) => false);
+                  });
+                  // Get.to(() => ProfilePage());
                 }
               },
             ),

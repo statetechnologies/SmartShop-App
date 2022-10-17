@@ -45,6 +45,7 @@ dependencies:
   http:
   provider:
   modal_progress_hud_nsn:
+  connectivity_plus:
 
 dev_dependencies:
   flutter_test:

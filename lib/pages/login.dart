@@ -3,10 +3,13 @@ import 'package:get/get.dart';
 import 'package:smart_shop/constants/theme.dart';
 import 'package:smart_shop/services/theme_service.dart';
 import 'package:smart_shop/widgets/buttons.dart';
+import '../services/categoryAPI.dart';
+import '../services/productAPI.dart';
+import '../services/salesAPI.dart';
+import '../services/userAPI.dart';
 import 'homepage.dart';
 import 'package:smart_shop/services/tokenAPI.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
 import 'loading_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -178,14 +181,21 @@ class _LoginPageState extends State<LoginPage> {
                           controller: usernameController,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.person),
-                              hintText: 'Username',
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey, width: 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                              focusColor: Colors.blueAccent),
+                            labelText: 'Username',
+                            prefixIcon: Icon(Icons.person),
+                            hintText: 'Username',
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                            focusColor: Colors.blueAccent,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blueAccent, width: 2),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                          ),
                         ),
                         SizedBox(
                           height: 15,
@@ -195,14 +205,21 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: true,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.password_rounded),
-                              hintText: 'Password',
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey, width: 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                              focusColor: Colors.blueAccent),
+                            labelText: 'Password',
+                            prefixIcon: Icon(Icons.password_rounded),
+                            hintText: 'Password',
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                            focusColor: Colors.blueAccent,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blueAccent, width: 2),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                          ),
                         ),
                         SizedBox(
                           height: 30,
@@ -222,6 +239,7 @@ class _LoginPageState extends State<LoginPage> {
 
                             if (session.isNotEmpty) {
                               showProgress = false;
+
                               await Get.to(() => LoadingScreen());
                             }
 
@@ -278,14 +296,21 @@ class _LoginPageState extends State<LoginPage> {
                         controller: RegemailController,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.email),
-                            hintText: 'Email Address',
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            focusColor: Colors.blueAccent),
+                          labelText: 'Email Address',
+                          prefixIcon: Icon(Icons.email),
+                          hintText: 'Email Address',
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          focusColor: Colors.blueAccent,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.blueAccent, width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                        ),
                       ),
                       SizedBox(
                         height: 15,
@@ -294,14 +319,21 @@ class _LoginPageState extends State<LoginPage> {
                         controller: regUsernameController,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            hintText: 'Username',
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            focusColor: Colors.blueAccent),
+                          labelText: 'Username',
+                          prefixIcon: Icon(Icons.person),
+                          hintText: 'Username',
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          focusColor: Colors.blueAccent,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.blueAccent, width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                        ),
                       ),
                       SizedBox(
                         height: 15,
@@ -311,14 +343,21 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: true,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.password_rounded),
-                            hintText: 'Password',
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            focusColor: Colors.blueAccent),
+                          labelText: 'Password',
+                          prefixIcon: Icon(Icons.password_rounded),
+                          hintText: 'Password',
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          focusColor: Colors.blueAccent,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.blueAccent, width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                        ),
                       ),
                       SizedBox(
                         height: 30,
@@ -410,17 +449,22 @@ class _LoginPageState extends State<LoginPage> {
                           label: 'Login',
                           icon: Icons.navigate_next,
                           onTap: () async {
-                            showProgress = true;
+                            setState(() {
+                              showProgress = true;
+                            });
 
                             await token.getToken(
                                 username: usernameController.text.toString(),
                                 password: passwordController.text.toString());
 
                             if (session.isNotEmpty) {
-                              print(session.first.accessKey);
-
+                              showProgress = false;
                               await Get.to(() => LoadingScreen());
                             }
+
+                            setState(() {
+                              showProgress = showSign!;
+                            });
                           },
                         ),
                       ],

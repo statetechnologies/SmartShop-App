@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_shop/services/theme_service.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:smart_shop/services/tokenAPI.dart';
 import 'package:smart_shop/services/productAPI.dart';
 import 'login.dart';
+import 'dart:io' show Platform;
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -36,7 +38,6 @@ class _ProductPageState extends State<ProductPage> {
       label: 'Add Product',
     )
   ];
-
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -44,12 +45,69 @@ class _ProductPageState extends State<ProductPage> {
     });
   }
 
+  DropdownButton AndroidPicker() {
+    List<DropdownMenuItem<String>> myDrop = [];
+
+    for (int i = 0; i < getProductLength() - 1; i++) {
+      var newItem = DropdownMenuItem<String>(
+        child: Text(
+          productData[i]['name'].toString(),
+          style: TextStyle(fontSize: 20),
+        ),
+        value: productData[i]['name'].toString(),
+        onTap: () {
+          setState(() {
+            //TODO: Add a function
+          });
+        },
+      );
+      myDrop.add(newItem);
+    }
+
+    return DropdownButton<String>(
+      underline: Container(
+        height: 0,
+      ),
+      icon: Icon(
+        Icons.arrow_drop_down,
+        size: 25,
+      ),
+      value: productData[0]['name'].toString(),
+      items: myDrop,
+      onChanged: (var value) {
+        setState(() {
+          // selectedCurrency = value!;
+          //TODO: Add a fucntion
+        });
+      },
+    );
+  }
+
+  CupertinoPicker iOSPicker() {
+    List<Text> myList = [];
+
+    for (int i = 0; i < getProductLength() - 1; i++) {
+      var newText = Text(productData[0]['name'].toString());
+
+      myList.add(newText);
+    }
+
+    return CupertinoPicker(
+      backgroundColor: Colors.lightBlue,
+      itemExtent: 32,
+      onSelectedItemChanged: (int value) {
+        print(productData[value]['name'].toString());
+      },
+      children: myList,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const NavigationDrawer(),
       backgroundColor: context.theme.backgroundColor,
-      appBar: _appBar(),
+      appBar: _appBar(context),
       body: _pageContent(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: true,
@@ -69,7 +127,7 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  _appBar() => AppBar(
+  _appBar(BuildContext context) => AppBar(
         toolbarHeight: 110,
         elevation: 2,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,
@@ -112,10 +170,21 @@ class _ProductPageState extends State<ProductPage> {
                   //TODO: add a log out and profile function
                 });
                 if (value == 'Log Out') {
-                  Get.to(() => LoginPage());
+                  Future.delayed(Duration.zero, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        (route) => false);
+                  });
+
+                  //  Get.to(() => LoginPage());
                   session.clear();
                 } else if (value == 'My Profile') {
-                  Get.to(() => ProfilePage());
+                  Future.delayed(Duration.zero, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                        (route) => false);
+                  });
+                  // Get.to(() => ProfilePage());
                 }
               },
             ),
@@ -148,7 +217,7 @@ class _ProductPageState extends State<ProductPage> {
               child: Container(
                 child: AnimationLimiter(
                   child: ListView.builder(
-                      itemCount: 4,
+                      itemCount: getProductLength(),
                       itemBuilder: (context, index) {
                         return AnimationConfiguration.staggeredList(
                           position: index,
@@ -249,6 +318,21 @@ class _ProductPageState extends State<ProductPage> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(5))),
                             focusColor: Colors.blueAccent),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        height: 50.0,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          color: context.theme.backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        alignment: Alignment.center,
+                        child: Center(
+                            child:
+                                Platform.isIOS ? iOSPicker() : AndroidPicker()),
                       ),
                       SizedBox(
                         height: 30,

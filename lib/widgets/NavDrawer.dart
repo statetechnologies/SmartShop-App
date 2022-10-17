@@ -73,8 +73,11 @@ class NavigationDrawer extends StatelessWidget {
                 'Home',
                 style: headingNavStyle,
               ),
-              onTap: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => HomePage())),
+              onTap: () => Future.delayed(Duration.zero, () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                    (route) => false);
+              }),
             ),
             ListTile(
               leading: Icon(Icons.shop, color: primary3LightMode),
@@ -82,8 +85,11 @@ class NavigationDrawer extends StatelessWidget {
                 'Products',
                 style: headingNavStyle,
               ),
-              onTap: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => ProductPage())),
+              onTap: () => Future.delayed(Duration.zero, () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => ProductPage()),
+                    (route) => false);
+              }),
             ),
             ListTile(
               leading: Icon(Icons.type_specimen, color: primary3LightMode),
@@ -91,8 +97,11 @@ class NavigationDrawer extends StatelessWidget {
                 'Type',
                 style: headingNavStyle,
               ),
-              onTap: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => TypePage())),
+              onTap: () => Future.delayed(Duration.zero, () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => TypePage()),
+                    (route) => false);
+              }),
             ),
             ListTile(
               leading: Icon(Icons.money, color: primary3LightMode),
@@ -100,8 +109,11 @@ class NavigationDrawer extends StatelessWidget {
                 'Sales',
                 style: headingNavStyle,
               ),
-              onTap: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => SalesPage())),
+              onTap: () => Future.delayed(Duration.zero, () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => SalesPage()),
+                    (route) => false);
+              }),
             ),
             Divider(
               color: Get.isDarkMode ? one : Colors.black,
@@ -116,7 +128,10 @@ class NavigationDrawer extends StatelessWidget {
                 style: headingNavStyle,
               ),
               onTap: () {
-                Navigator.of(context).pop();
+                Future.delayed(Duration.zero, () {
+                  Navigator.of(context).pop((route) => false);
+                });
+                //            Navigator.of(context).pop();
               },
             ),
           ],

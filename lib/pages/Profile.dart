@@ -18,19 +18,26 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       drawer: const NavigationDrawer(),
       backgroundColor: context.theme.backgroundColor,
-      appBar: _appBar(),
+      appBar: _appBar(context),
       body: Container(),
     );
   }
 
-  _appBar() => AppBar(
+  _appBar(BuildContext context) => AppBar(
         elevation: 2,
         toolbarHeight: 80,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage()),
-          ),
+          onPressed: () {
+            Future.delayed(Duration.zero, () {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                  (route) => false);
+            });
+
+            // Navigator.of(context).pushReplacement(
+            // MaterialPageRoute(builder: (context) => HomePage()));
+          },
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             size: 30,

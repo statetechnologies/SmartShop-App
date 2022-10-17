@@ -1,15 +1,15 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:smart_shop/services/tokenAPI.dart';
 
 var headers = {
-  'Authorization':
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY1OTYxNzIwLCJpYXQiOjE2NjU4NzUzMjAsImp0aSI6ImQ3MTM4NTFhNDE1YjRhYmY5ZmZmN2FlY2IwMDY0ZGI1IiwidXNlcl9pZCI6MX0.I7ovdCblN_VQ_ovM0t-6JvdzRHdUe7lE4wkblybXLvI',
+  'Authorization': 'Bearer ${session.first.accessKey}',
   'Cookie':
       'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
 };
 var productData;
+
+var length;
 
 Future<dynamic> getProducts() async {
   var request = http.Request(
@@ -22,7 +22,11 @@ Future<dynamic> getProducts() async {
   if (response.statusCode == 200) {
     String data = await response.stream.bytesToString();
     productData = await jsonDecode(data);
-    print(productData);
+
+    var stores = await json.decode(data);
+    final lengths = stores.length;
+    print('Product Length is $lengths');
+    print('Product Data $productData');
     return productData;
   } else {
     print(response.reasonPhrase);
@@ -61,4 +65,9 @@ getPrice(index) {
 getQuantity(index) {
   int quantity = productData[index]['quantity'];
   return quantity;
+}
+
+int getProductLength() {
+  length = productData.length;
+  return length;
 }
