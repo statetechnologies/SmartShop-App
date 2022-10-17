@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(sumPrice());
     return Scaffold(
       drawer: const NavigationDrawer(),
       backgroundColor: context.theme.backgroundColor,
@@ -39,9 +40,9 @@ class _HomePageState extends State<HomePage> {
           Tiles(
               icon: Icons.bar_chart_rounded,
               Iconcolor: blueIcon,
-              label: 'Total Sales',
-              value: 10000.00,
-              currency: 'Tsh'),
+              label: 'Total Sales ',
+              value: sumPrice(),
+              currency: 'Tsh '),
           SizedBox(
             height: 10,
           ),

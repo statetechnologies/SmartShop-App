@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:smart_shop/services/tokenAPI.dart';
 
@@ -6,6 +8,8 @@ var headers = {
   'Cookie':
       'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
 };
+
+var UserData;
 Future getUserProfile() async {
   var request = http.Request(
       'GET', Uri.parse('https://smartshop.mrshanas.com/api/auth/user/'));
@@ -15,10 +19,29 @@ Future getUserProfile() async {
   http.StreamedResponse response = await request.send();
 
   if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
+    String data = await response.stream.bytesToString();
+    print('user data is $data');
+    UserData = await jsonDecode(data);
+    return UserData;
   } else {
     print(response.reasonPhrase);
   }
+}
+
+getUserName() {
+  return UserData['username'];
+}
+
+getEmail() {
+  return UserData['email'];
+}
+
+getFname() {
+  return UserData['first_name'];
+}
+
+getLname() {
+  return UserData['last_name'];
 }
 
 void updateDetails(

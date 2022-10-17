@@ -9,7 +9,7 @@ var headers = {
 };
 var productData;
 
-var length;
+var length, totalPrice;
 
 Future<dynamic> getProducts() async {
   var request = http.Request(
@@ -70,4 +70,12 @@ getQuantity(index) {
 int getProductLength() {
   length = productData.length;
   return length;
+}
+
+sumPrice() {
+  totalPrice = 0;
+  for (int i = 0; i < getProductLength(); i++) {
+    totalPrice += double.parse(productData[i]['price']);
+  }
+  return totalPrice;
 }

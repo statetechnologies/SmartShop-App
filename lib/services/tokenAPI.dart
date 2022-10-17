@@ -28,7 +28,6 @@ class Token extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       String data = await response.stream.bytesToString();
-      // print(jsonDecode(data)['access']);
 
       var accessKey = await jsonDecode(data)['access'];
       var refreshKey = await jsonDecode(data)['refresh'];
