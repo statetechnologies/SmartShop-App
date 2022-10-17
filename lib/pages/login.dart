@@ -239,10 +239,8 @@ class _LoginPageState extends State<LoginPage> {
 
                             if (session.isNotEmpty) {
                               showProgress = false;
-
                               await Get.to(() => LoadingScreen());
                             }
-
                             setState(() {
                               showProgress = showSign!;
                             });

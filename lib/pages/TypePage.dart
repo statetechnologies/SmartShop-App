@@ -116,7 +116,6 @@ class _TypePageState extends State<TypePage> {
                         (route) => false);
                   });
 
-                  //  Get.to(() => LoginPage());
                   session.clear();
                 } else if (value == 'My Profile') {
                   Future.delayed(Duration.zero, () {
@@ -124,7 +123,6 @@ class _TypePageState extends State<TypePage> {
                         MaterialPageRoute(builder: (context) => ProfilePage()),
                         (route) => false);
                   });
-                  // Get.to(() => ProfilePage());
                 }
               },
             ),
