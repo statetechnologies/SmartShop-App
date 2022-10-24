@@ -33,21 +33,34 @@ Future<dynamic> getProducts() async {
   }
 }
 
-void addProduct(
+Future<dynamic> addProduct(
     {required String name,
     required String price,
-    required String category}) async {
+    required var category,
+    required String quantity}) async {
   var request = http.MultipartRequest(
       'POST', Uri.parse('https://smartshop.mrshanas.com/api/products/'));
 
-  request.fields.addAll({"name": name, "price": price, "category": category});
+  request.fields.addAll({
+    'name': name,
+    'price': price,
+    'category': category,
+    'quantity': quantity
+  });
 
   request.headers.addAll(headers);
 
   http.StreamedResponse response = await request.send();
 
   if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
+    String data = await response.stream.bytesToString();
+    productData = await jsonDecode(data);
+
+    var stores = await json.decode(data);
+    final lengths = stores.length;
+    print('Product Length is $lengths');
+    print('Product Data $productData');
+    return productData;
   } else {
     print(response.reasonPhrase);
   }

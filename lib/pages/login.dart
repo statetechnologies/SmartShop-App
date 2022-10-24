@@ -413,14 +413,21 @@ class _LoginPageState extends State<LoginPage> {
                           controller: usernameController,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.person),
-                              hintText: 'Username',
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey, width: 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                              focusColor: Colors.blueAccent),
+                            labelText: 'Username',
+                            prefixIcon: Icon(Icons.person),
+                            hintText: 'Username',
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                            focusColor: Colors.blueAccent,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blueAccent, width: 2),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                          ),
                         ),
                         SizedBox(
                           height: 15,
@@ -430,14 +437,21 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: true,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.password_rounded),
-                              hintText: 'Password',
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey, width: 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                              focusColor: Colors.blueAccent),
+                            labelText: 'Password',
+                            prefixIcon: Icon(Icons.password_rounded),
+                            hintText: 'Password',
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                            focusColor: Colors.blueAccent,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blueAccent, width: 2),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                          ),
                         ),
                         SizedBox(
                           height: 30,
@@ -459,7 +473,6 @@ class _LoginPageState extends State<LoginPage> {
                               showProgress = false;
                               await Get.to(() => LoadingScreen());
                             }
-
                             setState(() {
                               showProgress = showSign!;
                             });

@@ -10,6 +10,7 @@ import 'Profile.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:smart_shop/services/tokenAPI.dart';
 import 'package:smart_shop/services/productAPI.dart';
+import 'package:smart_shop/services/categoryAPI.dart';
 import 'login.dart';
 import 'dart:io' show Platform;
 
@@ -45,18 +46,22 @@ class _ProductPageState extends State<ProductPage> {
     });
   }
 
+  String selectedProduct = categoryData[0]['title'].toString();
+  var selectValue;
+
   DropdownButton AndroidPicker() {
     List<DropdownMenuItem<String>> myDrop = [];
 
-    for (int i = 0; i < getProductLength() - 1; i++) {
+    for (int i = 0; i < getTypeLength() - 1; i++) {
       var newItem = DropdownMenuItem<String>(
         child: Text(
-          productData[i]['name'].toString(),
+          categoryData[i]['title'].toString(),
           style: TextStyle(fontSize: 20),
         ),
-        value: productData[i]['name'].toString(),
+        value: categoryData[i]['title'].toString(),
         onTap: () {
           setState(() {
+            selectValue = i + 1;
             //TODO: Add a function
           });
         },
@@ -72,12 +77,12 @@ class _ProductPageState extends State<ProductPage> {
         Icons.arrow_drop_down,
         size: 25,
       ),
-      value: productData[0]['name'].toString(),
+      value: selectedProduct,
       items: myDrop,
       onChanged: (var value) {
         setState(() {
-          // selectedCurrency = value!;
-          //TODO: Add a fucntion
+          selectedProduct = value!;
+          //TODO: Add a function
         });
       },
     );
@@ -86,8 +91,8 @@ class _ProductPageState extends State<ProductPage> {
   CupertinoPicker iOSPicker() {
     List<Text> myList = [];
 
-    for (int i = 0; i < getProductLength() - 1; i++) {
-      var newText = Text(productData[0]['name'].toString());
+    for (int i = 0; i < getTypeLength() - 1; i++) {
+      var newText = Text(categoryData[0]['title'].toString());
 
       myList.add(newText);
     }
@@ -96,7 +101,8 @@ class _ProductPageState extends State<ProductPage> {
       backgroundColor: Colors.lightBlue,
       itemExtent: 32,
       onSelectedItemChanged: (int value) {
-        print(productData[value]['name'].toString());
+        selectedProduct = categoryData[value]['title'].toString();
+        print(categoryData[value]['title'].toString());
       },
       children: myList,
     );
@@ -161,35 +167,36 @@ class _ProductPageState extends State<ProductPage> {
               items:
                   _selectAction.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
-                  child: Text(value),
                   value: value,
+                  child: Text(value),
                 );
               }).toList(),
               onChanged: (String? value) {
                 setState(() {
                   //TODO: add a log out and profile function
-                });
-                if (value == 'Log Out') {
-                  Future.delayed(Duration.zero, () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                        (route) => false);
-                  });
+                  if (value == 'Log Out') {
+                    Future.delayed(Duration.zero, () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          (route) => false);
+                    });
 
-                  //  Get.to(() => LoginPage());
-                  session.clear();
-                } else if (value == 'My Profile') {
-                  Future.delayed(Duration.zero, () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => ProfilePage()),
-                        (route) => false);
-                  });
-                  // Get.to(() => ProfilePage());
-                }
+                    //  Get.to(() => LoginPage());
+                    session.clear();
+                  } else if (value == 'My Profile') {
+                    Future.delayed(Duration.zero, () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => ProfilePage()),
+                          (route) => false);
+                    });
+                    // Get.to(() => ProfilePage());
+                  }
+                });
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           )
         ],
@@ -335,18 +342,20 @@ class _ProductPageState extends State<ProductPage> {
                                 Platform.isIOS ? iOSPicker() : AndroidPicker()),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 10,
                       ),
                       CustomButton(
                         color: secondary1Dark,
                         label: 'Add',
                         icon: Icons.add,
-                        onTap: () {
+                        onTap: () async {
+                          await _validateProduct();
+
                           setState(() {
-                            _validateProduct();
                             prodName.clear();
                             priceName.clear();
                             quantityName.clear();
+                            getProducts();
                             _selectedIndex = 0;
                           });
                         },
@@ -401,12 +410,19 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
-  _validateProduct() {
+  _validateProduct() async {
     if (prodName.text.isNotEmpty &&
         priceName.text.isNotEmpty &&
         quantityName.text.isNotEmpty) {
-      // dataFile.addToList(prodName.text, double.parse(priceName.text),
-      //     int.parse(quantityName.text));
+      await addProduct(
+          name: prodName.text.toString(),
+          price: priceName.text.toString(),
+          category: selectValue.toString(),
+          quantity: quantityName.text.toString());
+      await getProducts();
+
+      print(selectedProduct);
+      print(selectValue);
     } else if (prodName.text.isEmpty ||
         priceName.text.isEmpty ||
         quantityName.text.isEmpty) {

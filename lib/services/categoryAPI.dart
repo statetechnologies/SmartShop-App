@@ -33,7 +33,7 @@ Future getCategory() async {
   }
 }
 
-void addCategory({required String title}) async {
+Future<dynamic> addCategory({required String title}) async {
   var request = http.MultipartRequest(
       'POST', Uri.parse('https://smartshop.mrshanas.com/api/categories/'));
   request.fields.addAll({'title': title});
@@ -43,7 +43,14 @@ void addCategory({required String title}) async {
   http.StreamedResponse response = await request.send();
 
   if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
+    String data = await response.stream.bytesToString();
+    categoryData = await jsonDecode(data);
+
+    final lengths = categoryData.length;
+    print('Category length is $lengths');
+    print(' Category $categoryData');
+
+    return categoryData;
   } else {
     print(response.reasonPhrase);
   }

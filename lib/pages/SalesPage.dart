@@ -1,7 +1,11 @@
+import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smart_shop/services/salesAPI.dart';
 import 'package:smart_shop/services/theme_service.dart';
 import '../constants/theme.dart';
+import '../services/productAPI.dart';
 import '../widgets/NavDrawer.dart';
 import '../widgets/buttons.dart';
 import '../widgets/salesTile.dart';
@@ -23,6 +27,9 @@ class SalesPage extends StatefulWidget {
 class _SalesPageState extends State<SalesPage> {
   List<String> _selectAction = ['My Profile', 'Log Out'];
 
+  String selectedProduct = productData[0]['name'].toString();
+  var selectValue;
+
   final TextEditingController priceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
 
@@ -39,6 +46,67 @@ class _SalesPageState extends State<SalesPage> {
       label: 'Sell',
     )
   ];
+
+  DropdownButton AndroidPicker() {
+    List<DropdownMenuItem<String>> myDrop = [];
+
+    for (int i = 0; i < getProductLength() - 1; i++) {
+      var newItem = DropdownMenuItem<String>(
+        child: Text(
+          productData[i]['name'].toString(),
+          style: TextStyle(fontSize: 20),
+        ),
+        value: productData[i]['name'].toString(),
+        onTap: () {
+          setState(() {
+            selectValue = i + 1;
+            //TODO: Add a function
+          });
+        },
+      );
+      myDrop.add(newItem);
+    }
+
+    return DropdownButton<String>(
+      underline: Container(
+        height: 0,
+      ),
+      icon: Icon(
+        Icons.arrow_drop_down,
+        size: 25,
+      ),
+      value: selectedProduct,
+      items: myDrop,
+      onChanged: (var value) {
+        setState(() {
+          selectedProduct = value!;
+          // selectedCurrency = value!;
+          //TODO: Add a function
+        });
+      },
+    );
+  }
+
+  CupertinoPicker iOSPicker() {
+    List<Text> myList = [];
+
+    for (int i = 0; i < getProductLength() - 1; i++) {
+      var newText = Text(productData[0]['name'].toString());
+
+      myList.add(newText);
+    }
+
+    return CupertinoPicker(
+      backgroundColor: Colors.lightBlue,
+      itemExtent: 32,
+      onSelectedItemChanged: (int value) {
+        selectedProduct = productData[value]['name'].toString();
+        print(productData[value]['name'].toString());
+      },
+      children: myList,
+    );
+  }
+
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -160,7 +228,7 @@ class _SalesPageState extends State<SalesPage> {
               child: Container(
                 child: AnimationLimiter(
                   child: ListView.builder(
-                      itemCount: dataFile.salesLenght,
+                      itemCount: getSalesLength(),
                       itemBuilder: (context, index) {
                         return AnimationConfiguration.staggeredList(
                           position: index,
@@ -168,10 +236,8 @@ class _SalesPageState extends State<SalesPage> {
                           child: FadeInAnimation(
                             child: SalesTiles(
                                 index: index,
-                                Name:
-                                    'Price Paid is ${dataFile.sales.elementAt(index).Pricepaid}',
-                                quantity:
-                                    dataFile.sales.elementAt(index).quantity),
+                                Name: 'Price Paid is ${getSalePrice(index)}',
+                                quantity: getSalesQuantity(index)),
                           ),
                         );
                       }),
@@ -225,7 +291,7 @@ class _SalesPageState extends State<SalesPage> {
                                     BorderRadius.all(Radius.circular(5))),
                             focusColor: Colors.blueAccent),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       TextFormField(
@@ -247,16 +313,28 @@ class _SalesPageState extends State<SalesPage> {
                       SizedBox(
                         height: 15,
                       ),
+                      Container(
+                        height: 50.0,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          color: context.theme.backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        alignment: Alignment.center,
+                        child: Center(
+                            child:
+                                Platform.isIOS ? iOSPicker() : AndroidPicker()),
+                      ),
                       SizedBox(
-                        height: 30,
+                        height: 10,
                       ),
                       CustomButton(
                         color: secondary1Dark,
                         label: 'Add',
                         icon: Icons.add,
-                        onTap: () {
+                        onTap: () async {
+                          await _validateSales();
                           setState(() {
-                            _validateSales();
                             priceController.clear();
                             quantityController.clear();
                             _selectedIndex = 0;
@@ -274,7 +352,7 @@ class _SalesPageState extends State<SalesPage> {
       default:
         return Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 160,
             ),
             Center(
@@ -283,7 +361,7 @@ class _SalesPageState extends State<SalesPage> {
                 style: headingStyle.copyWith(fontSize: 32),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Expanded(
@@ -313,10 +391,12 @@ class _SalesPageState extends State<SalesPage> {
     }
   }
 
-  _validateSales() {
+  _validateSales() async {
     if (priceController.text.isNotEmpty && quantityController.text.isNotEmpty) {
-      dataFile.addToList(double.parse(priceController.text),
-          int.parse(quantityController.text));
+      await addSales(
+          paid: double.parse(priceController.text),
+          product: selectValue.toString());
+      await getSales();
     } else if (priceController.text.isEmpty ||
         quantityController.text.isEmpty) {
       Get.snackbar('Required', 'All required fields must be filled',

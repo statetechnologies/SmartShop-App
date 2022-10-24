@@ -284,9 +284,10 @@ class _TypePageState extends State<TypePage> {
     }
   }
 
-  _validateType() {
+  _validateType() async {
     if (productController.text.isNotEmpty) {
-      dataFile.addToList(productController.text);
+      // dataFile.addToList(productController.text);
+      await addCategory(title: productController.text.toString());
     } else if (productController.text.isEmpty) {
       Get.snackbar('Required', 'All required fields must be filled',
           backgroundColor: Get.isDarkMode ? Colors.white : Colors.black,

@@ -32,7 +32,8 @@ Future getSales() async {
   }
 }
 
-void addSales({required double paid, required String product}) async {
+Future<dynamic> addSales(
+    {required double paid, required String product}) async {
   var request = http.MultipartRequest(
       'POST', Uri.parse('https://smartshop.mrshanas.com/api/sales/'));
 
@@ -43,22 +44,29 @@ void addSales({required double paid, required String product}) async {
   http.StreamedResponse response = await request.send();
 
   if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
+    String data = await response.stream.bytesToString();
+    salesData = await jsonDecode(data);
+
+    final lengths = salesData.length;
+    print('Sales length is $lengths');
+    print(' Sales $salesData');
+
+    return salesData;
   } else {
     print(response.reasonPhrase);
   }
 }
 
-getproductName(index) {
+String getSaleName(index) {
   return salesData[index]['name'];
 }
 
-double getPrice(index) {
+double getSalePrice(index) {
   double price = double.parse(salesData[index]['amount_paid']);
   return price;
 }
 
-int getQuantity(index) {
+int getSalesQuantity(index) {
   int quantity = salesData[index]['quantity_bought'];
   return quantity;
 }
