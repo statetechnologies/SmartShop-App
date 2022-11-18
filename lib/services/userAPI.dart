@@ -12,7 +12,7 @@ var headers = {
 var UserData;
 Future getUserProfile() async {
   var request = http.Request(
-      'GET', Uri.parse('https://smartshop.mrshanas.com/api/auth/user/'));
+      'GET', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/auth/user/'));
 
   request.headers.addAll(headers);
 

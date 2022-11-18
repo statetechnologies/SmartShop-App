@@ -18,7 +18,7 @@ class Token extends ChangeNotifier {
           'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
     };
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://smartshop.mrshanas.com/api/token/'));
+        'POST', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/token/'));
 
     request.fields.addAll({'username': username, 'password': password});
 

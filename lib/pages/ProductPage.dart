@@ -338,8 +338,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         alignment: Alignment.center,
                         child: Center(
-                            child:
-                                Platform.isIOS ? iOSPicker() : AndroidPicker()),
+                            child: AndroidPicker()),
                       ),
                       SizedBox(
                         height: 10,

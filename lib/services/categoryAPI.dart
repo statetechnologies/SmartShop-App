@@ -13,7 +13,7 @@ var categoryData, length;
 
 Future getCategory() async {
   var request = http.Request(
-      'GET', Uri.parse('https://smartshop.mrshanas.com/api/categories/'));
+      'GET', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/categories/'));
 
   request.headers.addAll(headers);
 
@@ -24,8 +24,8 @@ Future getCategory() async {
     categoryData = await jsonDecode(data);
 
     final lengths = categoryData.length;
-    print('Category length is $lengths');
-    print(' Category $categoryData');
+    // print('Category length is $lengths');
+    // print(' Category $categoryData');
 
     return categoryData;
   } else {
@@ -35,7 +35,7 @@ Future getCategory() async {
 
 Future<dynamic> addCategory({required String title}) async {
   var request = http.MultipartRequest(
-      'POST', Uri.parse('https://smartshop.mrshanas.com/api/categories/'));
+      'POST', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/categories/'));
   request.fields.addAll({'title': title});
 
   request.headers.addAll(headers);
@@ -47,8 +47,8 @@ Future<dynamic> addCategory({required String title}) async {
     categoryData = await jsonDecode(data);
 
     final lengths = categoryData.length;
-    print('Category length is $lengths');
-    print(' Category $categoryData');
+    // print('Category length is $lengths');
+    // print(' Category $categoryData');
 
     return categoryData;
   } else {

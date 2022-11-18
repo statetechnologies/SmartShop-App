@@ -4,8 +4,8 @@ import 'Sessions.dart';
 class userModel {
   Future<dynamic> getLoginData() async {
     var smartShop = Uri(
-        scheme: 'http',
-        host: 'smartshop.mrshanas.com',
+        scheme: 'https',
+        host: 'smartshop-yqokj.ondigitalocean.app',
         path: '/api/auth/login/');
     NetworkHelper networkHelper = NetworkHelper(smartShop);
     var loginData = await networkHelper.getData();

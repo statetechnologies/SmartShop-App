@@ -98,13 +98,21 @@ class _SalesPageState extends State<SalesPage> {
 
     return CupertinoPicker(
       backgroundColor: Colors.lightBlue,
-      itemExtent: 32,
-      onSelectedItemChanged: (int value) {
-        selectedProduct = productData[value]['name'].toString();
+      itemExtent: 20,
+      onSelectedItemChanged: (value) async {
+        await getChoice(value);
+          // selectedProduct = await productData[value]['name'].toString();
         print(productData[value]['name'].toString());
       },
       children: myList,
     );
+  }
+
+   getChoice(value) async{
+    var myProduct  = await productData[value]['name'];
+    setState(() {
+     selectedProduct=myProduct.toString();
+    });
   }
 
   int _selectedIndex = 0;
@@ -315,15 +323,14 @@ class _SalesPageState extends State<SalesPage> {
                       ),
                       Container(
                         height: 50.0,
-                        width: 120,
+                        width: 180,
                         decoration: BoxDecoration(
                           color: context.theme.backgroundColor,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         alignment: Alignment.center,
                         child: Center(
-                            child:
-                                Platform.isIOS ? iOSPicker() : AndroidPicker()),
+                            child: AndroidPicker()),
                       ),
                       SizedBox(
                         height: 10,

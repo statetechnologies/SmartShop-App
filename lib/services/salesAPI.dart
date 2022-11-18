@@ -12,7 +12,7 @@ var salesData, length;
 
 Future getSales() async {
   var request = http.Request(
-      'GET', Uri.parse('https://smartshop.mrshanas.com/api/sales/'));
+      'GET', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/sales/'));
 
   request.headers.addAll(headers);
 
@@ -35,7 +35,7 @@ Future getSales() async {
 Future<dynamic> addSales(
     {required double paid, required String product}) async {
   var request = http.MultipartRequest(
-      'POST', Uri.parse('https://smartshop.mrshanas.com/api/sales/'));
+      'POST', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/sales/'));
 
   request.headers.addAll(headers);
   request.fields
@@ -48,8 +48,8 @@ Future<dynamic> addSales(
     salesData = await jsonDecode(data);
 
     final lengths = salesData.length;
-    print('Sales length is $lengths');
-    print(' Sales $salesData');
+    // print('Sales length is $lengths');
+    // print(' Sales $salesData');
 
     return salesData;
   } else {

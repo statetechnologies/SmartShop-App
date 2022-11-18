@@ -14,32 +14,53 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 150.0,
-          height: 60.0,
-          decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(15.0)),
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Icon(
-                  icon,
-                  color: Colors.white,
-                ),
-                Text(
-                  label,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
+    return ElevatedButton(onPressed: onTap, child: Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(
+            icon,
+            color: Colors.white,
           ),
-        ));
+          Text(
+            label,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
+          )
+        ],
+      ),
+    ),
+    );
+      // GestureDetector(
+      //   onTap: onTap,
+      //   child: Container(
+      //     width: 150.0,
+      //     height: 60.0,
+      //     decoration: BoxDecoration(
+      //         color: color, borderRadius: BorderRadius.circular(15.0)),
+      //     child: Padding(
+      //       padding: const EdgeInsets.all(5.0),
+      //       child: Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //         children: [
+      //           Icon(
+      //             icon,
+      //             color: Colors.white,
+      //           ),
+      //           Text(
+      //             label,
+      //             style: TextStyle(
+      //                 color: Colors.white,
+      //                 fontSize: 18.0,
+      //                 fontWeight: FontWeight.bold),
+      //           )
+      //         ],
+      //       ),
+      //     ),
+      //   ));
+
   }
 }

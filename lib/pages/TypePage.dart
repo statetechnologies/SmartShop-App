@@ -230,11 +230,13 @@ class _TypePageState extends State<TypePage> {
                         color: secondary1Dark,
                         label: 'Add',
                         icon: Icons.add,
-                        onTap: () {
+                        onTap: () async{
+                          await _validateType();
                           setState(() {
-                            _validateType();
-                            productController.clear();
-                            _selectedIndex = 0;
+
+                              productController.clear();
+                              _selectedIndex = 0;
+
                           });
                         },
                       ),
@@ -288,6 +290,7 @@ class _TypePageState extends State<TypePage> {
     if (productController.text.isNotEmpty) {
       // dataFile.addToList(productController.text);
       await addCategory(title: productController.text.toString());
+      await getCategory();
     } else if (productController.text.isEmpty) {
       Get.snackbar('Required', 'All required fields must be filled',
           backgroundColor: Get.isDarkMode ? Colors.white : Colors.black,

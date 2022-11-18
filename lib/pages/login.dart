@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_shop/constants/theme.dart';
+import 'package:smart_shop/pages/verifyWait.dart';
+import 'package:smart_shop/services/registerAPI.dart';
 import 'package:smart_shop/services/theme_service.dart';
 import 'package:smart_shop/widgets/buttons.dart';
 import '../services/categoryAPI.dart';
@@ -26,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController RegemailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController RegpasswordController = TextEditingController();
+  final TextEditingController Reg2passwordController = TextEditingController();
   final TextEditingController regUsernameController = TextEditingController();
   int _selectedIndex = 0;
   List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
@@ -121,13 +124,15 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  _validateRegistry() {
+  _validateRegistry() async{
     if (RegemailController.text.isNotEmpty &&
-        RegpasswordController.text.isNotEmpty &&
+        RegpasswordController.text.isNotEmpty && RegpasswordController.text.isNotEmpty &&
         regUsernameController.text.isNotEmpty) {
-      if (RegemailController.text == 'email' &&
-          RegpasswordController.text == 'password') {
-        Get.to(() => HomePage());
+      if (RegpasswordController.text == Reg2passwordController.text) {
+
+        await register(username: regUsernameController.text.toString(),email: RegemailController.text.toString(), password1: RegpasswordController.text.toString(), password2: Reg2passwordController.text.toString());
+
+        Get.to(() => LoadingScreen());
       }
     } else if (RegemailController.text.isEmpty ||
         RegpasswordController.text.isEmpty) {
@@ -291,29 +296,6 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextFormField(
-                        controller: RegemailController,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          labelText: 'Email Address',
-                          prefixIcon: Icon(Icons.email),
-                          hintText: 'Email Address',
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey, width: 1),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          focusColor: Colors.blueAccent,
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.blueAccent, width: 2),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
                         controller: regUsernameController,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
@@ -334,7 +316,30 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(
-                        height: 15,
+                        height: 7,
+                      ),
+                      TextFormField(
+                        controller: RegemailController,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          labelText: 'Email Address',
+                          prefixIcon: Icon(Icons.email),
+                          hintText: 'Email Address',
+                          border: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: Colors.grey, width: 1),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(5))),
+                          focusColor: Colors.blueAccent,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.blueAccent, width: 2),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(15))),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 7,
                       ),
                       TextFormField(
                         controller: RegpasswordController,
@@ -358,7 +363,31 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 7,
+                      ),
+                      TextFormField(
+                        controller: Reg2passwordController,
+                        obscureText: true,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          prefixIcon: Icon(Icons.password_rounded),
+                          hintText: 'Re-Enter Password',
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          focusColor: Colors.blueAccent,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.blueAccent, width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                       CustomButton(
                         color: secondary1Dark,

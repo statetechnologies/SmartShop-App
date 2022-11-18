@@ -13,7 +13,7 @@ var length, totalPrice;
 
 Future<dynamic> getProducts() async {
   var request = http.Request(
-      'GET', Uri.parse('https://smartshop.mrshanas.com/api/products/'));
+      'GET', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/products/'));
 
   request.headers.addAll(headers);
 
@@ -25,8 +25,8 @@ Future<dynamic> getProducts() async {
 
     var stores = await json.decode(data);
     final lengths = stores.length;
-    print('Product Length is $lengths');
-    print('Product Data $productData');
+    // print('Product Length is $lengths');
+    // print('Product Data $productData');
     return productData;
   } else {
     print(response.reasonPhrase);
@@ -39,7 +39,7 @@ Future<dynamic> addProduct(
     required var category,
     required String quantity}) async {
   var request = http.MultipartRequest(
-      'POST', Uri.parse('https://smartshop.mrshanas.com/api/products/'));
+      'POST', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/products/'));
 
   request.fields.addAll({
     'name': name,
@@ -58,8 +58,8 @@ Future<dynamic> addProduct(
 
     var stores = await json.decode(data);
     final lengths = stores.length;
-    print('Product Length is $lengths');
-    print('Product Data $productData');
+    // print('Product Length is $lengths');
+    // print('Product Data $productData');
     return productData;
   } else {
     print(response.reasonPhrase);
