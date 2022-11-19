@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.statetechnologies.smart_shop">
    <application
-        android:label="smart_shop"
+        android:label="Smart Shop"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
