@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:smart_shop/services/categoryAPI.dart';
+import 'package:smart_shop/services/productAPI.dart';
 import 'package:smart_shop/services/theme_service.dart';
+import 'package:smart_shop/services/tokenAPI.dart';
+
 import '../constants/theme.dart';
 import '../widgets/NavDrawer.dart';
 import '../widgets/buttons.dart';
 import '../widgets/productTile.dart';
 import 'Profile.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:smart_shop/services/tokenAPI.dart';
-import 'package:smart_shop/services/productAPI.dart';
-import 'package:smart_shop/services/categoryAPI.dart';
 import 'login.dart';
-import 'dart:io' show Platform;
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -111,7 +111,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const NavigationDrawer(),
+      drawer:  MyNavDrawer(),
       backgroundColor: context.theme.backgroundColor,
       appBar: _appBar(context),
       body: _pageContent(_selectedIndex),
@@ -134,20 +134,19 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   _appBar(BuildContext context) => AppBar(
-        toolbarHeight: 110,
+        centerTitle: true,
+        toolbarHeight: 75,
         elevation: 2,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,
-        title: Center(
-          child: GestureDetector(
-            onTap: () => ThemeServices().changeThemeMode(),
-            child: CircleAvatar(
-              radius: 25,
-              backgroundColor: Get.isDarkMode ? Colors.black26 : bodyLight,
-              child: Icon(
-                Get.isDarkMode ? Icons.wb_sunny_sharp : Icons.nightlight_round,
-                size: 20.0,
-                color: Get.isDarkMode ? Colors.white : Colors.black12,
-              ),
+        title: GestureDetector(
+          onTap: () => ThemeServices().changeThemeMode(),
+          child: CircleAvatar(
+            radius: 25,
+            backgroundColor: Get.isDarkMode ? Colors.black26 : bodyLight,
+            child: Icon(
+              Get.isDarkMode ? Icons.wb_sunny_sharp : Icons.nightlight_round,
+              size: 20.0,
+              color: Get.isDarkMode ? Colors.white : Colors.black12,
             ),
           ),
         ),
@@ -331,14 +330,13 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                       Container(
                         height: 50.0,
-                        width: 120,
+                        width: 145,
                         decoration: BoxDecoration(
                           color: context.theme.backgroundColor,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         alignment: Alignment.center,
-                        child: Center(
-                            child: AndroidPicker()),
+                        child: Center(child: AndroidPicker()),
                       ),
                       SizedBox(
                         height: 10,

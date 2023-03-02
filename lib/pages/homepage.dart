@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:smart_shop/constants/theme.dart';
 import 'package:smart_shop/pages/login.dart';
+import 'package:smart_shop/services/productAPI.dart';
 import 'package:smart_shop/services/theme_service.dart';
-import 'package:smart_shop/widgets/tiles.dart';
+import 'package:smart_shop/services/tokenAPI.dart';
 import 'package:smart_shop/widgets/productTile.dart';
+import 'package:smart_shop/widgets/tiles.dart';
+
 import '../services/categoryAPI.dart';
 import '../widgets/NavDrawer.dart';
 import 'Profile.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:smart_shop/services/tokenAPI.dart';
-import 'package:smart_shop/services/productAPI.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     print(sumPrice());
     return Scaffold(
-      drawer: const NavigationDrawer(),
+      drawer: MyNavDrawer(),
       backgroundColor: context.theme.backgroundColor,
       appBar: _appBar(context),
       body: Column(
@@ -97,20 +98,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   _appBar(BuildContext context) => AppBar(
-        toolbarHeight: 110,
+        centerTitle: true,
+        toolbarHeight: 75,
         elevation: 2,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,
-        title: Center(
-          child: GestureDetector(
-            onTap: () => ThemeServices().changeThemeMode(),
-            child: CircleAvatar(
-              radius: 25,
-              backgroundColor: Get.isDarkMode ? Colors.black26 : bodyLight,
-              child: Icon(
-                Get.isDarkMode ? Icons.wb_sunny_sharp : Icons.nightlight_round,
-                size: 20.0,
-                color: Get.isDarkMode ? Colors.white : Colors.black12,
-              ),
+        title: GestureDetector(
+          onTap: () => ThemeServices().changeThemeMode(),
+          child: CircleAvatar(
+            radius: 25,
+            backgroundColor: Get.isDarkMode ? Colors.black26 : bodyLight,
+            child: Icon(
+              Get.isDarkMode ? Icons.wb_sunny_sharp : Icons.nightlight_round,
+              size: 20.0,
+              color: Get.isDarkMode ? Colors.white : Colors.black12,
             ),
           ),
         ),

@@ -18,3 +18,5 @@ class Data extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+List<Session> sessions =[];

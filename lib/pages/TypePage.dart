@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smart_shop/models/TypeFile.dart';
+import 'package:smart_shop/services/categoryAPI.dart';
 import 'package:smart_shop/services/theme_service.dart';
+import 'package:smart_shop/services/tokenAPI.dart';
+
 import '../constants/theme.dart';
 import '../widgets/NavDrawer.dart';
 import '../widgets/buttons.dart';
 import 'Profile.dart';
-import 'package:smart_shop/models/TypeFile.dart';
 import 'login.dart';
-import 'package:smart_shop/services/tokenAPI.dart';
-import 'package:smart_shop/services/categoryAPI.dart';
 
 Data dataFile = Data();
 
@@ -45,7 +46,7 @@ class _TypePageState extends State<TypePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const NavigationDrawer(),
+      drawer: MyNavDrawer(),
       backgroundColor: context.theme.backgroundColor,
       appBar: _appBar(context),
       body: _pageContent(_selectedIndex),
@@ -68,20 +69,19 @@ class _TypePageState extends State<TypePage> {
   }
 
   _appBar(BuildContext context) => AppBar(
-        toolbarHeight: 110,
+        centerTitle: true,
+        toolbarHeight: 75,
         elevation: 2,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,
-        title: Center(
-          child: GestureDetector(
-            onTap: () => ThemeServices().changeThemeMode(),
-            child: CircleAvatar(
-              radius: 25,
-              backgroundColor: Get.isDarkMode ? Colors.black26 : bodyLight,
-              child: Icon(
-                Get.isDarkMode ? Icons.wb_sunny_sharp : Icons.nightlight_round,
-                size: 20.0,
-                color: Get.isDarkMode ? Colors.white : Colors.black12,
-              ),
+        title: GestureDetector(
+          onTap: () => ThemeServices().changeThemeMode(),
+          child: CircleAvatar(
+            radius: 25,
+            backgroundColor: Get.isDarkMode ? Colors.black26 : bodyLight,
+            child: Icon(
+              Get.isDarkMode ? Icons.wb_sunny_sharp : Icons.nightlight_round,
+              size: 20.0,
+              color: Get.isDarkMode ? Colors.white : Colors.black12,
             ),
           ),
         ),
@@ -230,13 +230,11 @@ class _TypePageState extends State<TypePage> {
                         color: secondary1Dark,
                         label: 'Add',
                         icon: Icons.add,
-                        onTap: () async{
+                        onTap: () async {
                           await _validateType();
                           setState(() {
-
-                              productController.clear();
-                              _selectedIndex = 0;
-
+                            productController.clear();
+                            _selectedIndex = 0;
                           });
                         },
                       ),

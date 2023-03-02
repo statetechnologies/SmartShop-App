@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_shop/constants/theme.dart';
+import 'package:smart_shop/pages/infoPage.dart';
 import '../pages/ProductPage.dart';
 import '../pages/SalesPage.dart';
 import '../pages/TypePage.dart';
 import '../pages/homepage.dart';
 import 'package:smart_shop/services/tokenAPI.dart';
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({
-    Key? key,
-  }) : super(key: key);
+class MyNavDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +127,9 @@ class NavigationDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Future.delayed(Duration.zero, () {
-                  Navigator.of(context).pop((route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => Infopage()),
+                          (route) => false);
                 });
                 //            Navigator.of(context).pop();
               },

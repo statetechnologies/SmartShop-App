@@ -1,17 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:smart_shop/constants/theme.dart';
-import 'package:smart_shop/pages/verifyWait.dart';
 import 'package:smart_shop/services/registerAPI.dart';
 import 'package:smart_shop/services/theme_service.dart';
-import 'package:smart_shop/widgets/buttons.dart';
-import '../services/categoryAPI.dart';
-import '../services/productAPI.dart';
-import '../services/salesAPI.dart';
-import '../services/userAPI.dart';
-import 'homepage.dart';
 import 'package:smart_shop/services/tokenAPI.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:smart_shop/widgets/buttons.dart';
+
+import 'homepage.dart';
 import 'loading_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -79,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _appBar() => AppBar(
+        centerTitle: true,
         elevation: 2,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,
         leading: SizedBox(
@@ -124,13 +122,17 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  _validateRegistry() async{
+  _validateRegistry() async {
     if (RegemailController.text.isNotEmpty &&
-        RegpasswordController.text.isNotEmpty && RegpasswordController.text.isNotEmpty &&
+        RegpasswordController.text.isNotEmpty &&
+        RegpasswordController.text.isNotEmpty &&
         regUsernameController.text.isNotEmpty) {
       if (RegpasswordController.text == Reg2passwordController.text) {
-
-        await register(username: regUsernameController.text.toString(),email: RegemailController.text.toString(), password1: RegpasswordController.text.toString(), password2: Reg2passwordController.text.toString());
+        await register(
+            username: regUsernameController.text.toString(),
+            email: RegemailController.text.toString(),
+            password1: RegpasswordController.text.toString(),
+            password2: Reg2passwordController.text.toString());
 
         Get.to(() => LoadingScreen());
       }
@@ -232,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                         CustomButton(
                           color: secondary1Dark,
                           label: 'Login',
-                          icon: Icons.navigate_next,
+                          icon: Icons.login,
                           onTap: () async {
                             setState(() {
                               showProgress = true;
@@ -327,15 +329,15 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Email Address',
                           border: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.grey, width: 1),
+                                  BorderSide(color: Colors.grey, width: 1),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(5))),
+                                  BorderRadius.all(Radius.circular(5))),
                           focusColor: Colors.blueAccent,
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Colors.blueAccent, width: 2),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(15))),
+                                  BorderRadius.all(Radius.circular(15))),
                         ),
                       ),
                       SizedBox(

@@ -1,18 +1,18 @@
-import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:smart_shop/models/SalesFile.dart';
 import 'package:smart_shop/services/salesAPI.dart';
 import 'package:smart_shop/services/theme_service.dart';
+import 'package:smart_shop/services/tokenAPI.dart';
+
 import '../constants/theme.dart';
 import '../services/productAPI.dart';
 import '../widgets/NavDrawer.dart';
 import '../widgets/buttons.dart';
 import '../widgets/salesTile.dart';
 import 'Profile.dart';
-import 'package:smart_shop/models/SalesFile.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:smart_shop/services/tokenAPI.dart';
 import 'login.dart';
 
 Data dataFile = Data();
@@ -101,17 +101,17 @@ class _SalesPageState extends State<SalesPage> {
       itemExtent: 20,
       onSelectedItemChanged: (value) async {
         await getChoice(value);
-          // selectedProduct = await productData[value]['name'].toString();
+        // selectedProduct = await productData[value]['name'].toString();
         print(productData[value]['name'].toString());
       },
       children: myList,
     );
   }
 
-   getChoice(value) async{
-    var myProduct  = await productData[value]['name'];
+  getChoice(value) async {
+    var myProduct = await productData[value]['name'];
     setState(() {
-     selectedProduct=myProduct.toString();
+      selectedProduct = myProduct.toString();
     });
   }
 
@@ -125,7 +125,7 @@ class _SalesPageState extends State<SalesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const NavigationDrawer(),
+      drawer:  MyNavDrawer(),
       backgroundColor: context.theme.backgroundColor,
       appBar: _appBar(context),
       body: _pageContent(_selectedIndex),
@@ -148,20 +148,19 @@ class _SalesPageState extends State<SalesPage> {
   }
 
   _appBar(BuildContext context) => AppBar(
-        toolbarHeight: 110,
+        centerTitle: true,
+        toolbarHeight: 75,
         elevation: 2,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,
-        title: Center(
-          child: GestureDetector(
-            onTap: () => ThemeServices().changeThemeMode(),
-            child: CircleAvatar(
-              radius: 25,
-              backgroundColor: Get.isDarkMode ? Colors.black26 : bodyLight,
-              child: Icon(
-                Get.isDarkMode ? Icons.wb_sunny_sharp : Icons.nightlight_round,
-                size: 20.0,
-                color: Get.isDarkMode ? Colors.white : Colors.black12,
-              ),
+        title: GestureDetector(
+          onTap: () => ThemeServices().changeThemeMode(),
+          child: CircleAvatar(
+            radius: 25,
+            backgroundColor: Get.isDarkMode ? Colors.black26 : bodyLight,
+            child: Icon(
+              Get.isDarkMode ? Icons.wb_sunny_sharp : Icons.nightlight_round,
+              size: 20.0,
+              color: Get.isDarkMode ? Colors.white : Colors.black12,
             ),
           ),
         ),
@@ -329,8 +328,7 @@ class _SalesPageState extends State<SalesPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         alignment: Alignment.center,
-                        child: Center(
-                            child: AndroidPicker()),
+                        child: Center(child: AndroidPicker()),
                       ),
                       SizedBox(
                         height: 10,

@@ -1,5 +1,7 @@
 import 'package:http/http.dart' as http;
 
+import '../constants/reusables.dart';
+
 var headers = {
   'Cookie':
       'csrftoken=sEvrdG2TFMOFiZsz9vblDuZ3FCv6GCjTx6wWno6CRn1ZOUULVuq5ELBUkIZXzDnd; messages=W1siX19qc29uX21lc3NhZ2UiLDAsMjAsIkNvbmZpcm1hdGlvbiBlLW1haWwgc2VudCB0byBqYW1lc2thbmdhMjlAZ21haWwuY29tLiJdXQ:1ovwBU:9EcXOGQG1I5T6j2FQULpipVbzt6INylz9PeLcXxqFlQ; sessionid=1n7rjzrrwcg1ziuoh9oith10fd8usfn8'
@@ -12,7 +14,7 @@ Future<void> register(
   var request = http.MultipartRequest(
       'POST',
       Uri.parse(
-          'https://smartshop-yqokj.ondigitalocean.app/api/auth/register/'));
+          '$apiLink/auth/register/'));
   request.fields.addAll({
     'username': username,
     'email': email,

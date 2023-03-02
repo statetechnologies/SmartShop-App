@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:smart_shop/services/tokenAPI.dart';
 
+import '../constants/reusables.dart';
+
 var headers = {
   'Authorization': 'Bearer ${session.first.accessKey}',
   'Cookie':
@@ -35,7 +37,7 @@ Future getCategory() async {
 
 Future<dynamic> addCategory({required String title}) async {
   var request = http.MultipartRequest(
-      'POST', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/categories/'));
+      'POST', Uri.parse('$apiLink/categories/'));
   request.fields.addAll({'title': title});
 
   request.headers.addAll(headers);

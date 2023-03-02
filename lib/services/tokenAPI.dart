@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../constants/reusables.dart';
 import '../pages/homepage.dart';
 import 'Sessions.dart';
 
@@ -18,7 +19,7 @@ class Token extends ChangeNotifier {
           'csrftoken=DbBfvJYlucT7gs1EXb8rD6C8unq9WGv858XGaWMtNbifN5V1ADWojonLTxRAU8jf'
     };
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/token/'));
+        'POST', Uri.parse('$apiLink/token/'));
 
     request.fields.addAll({'username': username, 'password': password});
 
@@ -45,7 +46,9 @@ class Token extends ChangeNotifier {
 
       return jsonDecode(data);
     } else {
-      Get.snackbar('Required', '${response.reasonPhrase}',
+      String data = await response.stream.bytesToString();
+      var output=jsonDecode(data);
+      Get.snackbar('Required', output['detail'],
           backgroundColor: Get.isDarkMode ? Colors.white : Colors.black,
           colorText: Colors.red,
           icon: Icon(
@@ -55,7 +58,6 @@ class Token extends ChangeNotifier {
           snackPosition: SnackPosition.BOTTOM);
       goPage = await response.reasonPhrase;
       showSign = false;
-      print('Reason is ${response.reasonPhrase}');
     }
   }
 }

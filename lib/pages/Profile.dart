@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_shop/services/theme_service.dart';
+import 'package:smart_shop/services/userAPI.dart';
+
 import '../constants/theme.dart';
 import '../widgets/NavDrawer.dart';
 import 'homepage.dart';
-import 'package:smart_shop/services/userAPI.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const NavigationDrawer(),
+      drawer:  MyNavDrawer(),
       backgroundColor: context.theme.backgroundColor,
       appBar: _appBar(context),
       body: Column(
@@ -120,6 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   _appBar(BuildContext context) => AppBar(
+        centerTitle: true,
         elevation: 2,
         toolbarHeight: 80,
         backgroundColor: Get.isDarkMode ? primary3DarkTiles : primary2Light,

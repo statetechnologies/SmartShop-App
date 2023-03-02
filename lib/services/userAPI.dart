@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:smart_shop/services/tokenAPI.dart';
 
+import '../constants/reusables.dart';
+
 var headers = {
   'Authorization': 'Bearer ${session.first.accessKey}',
   'Cookie':
@@ -12,7 +14,7 @@ var headers = {
 var UserData;
 Future getUserProfile() async {
   var request = http.Request(
-      'GET', Uri.parse('https://smartshop-yqokj.ondigitalocean.app/api/auth/user/'));
+      'GET', Uri.parse('$apiLink/auth/user/'));
 
   request.headers.addAll(headers);
 

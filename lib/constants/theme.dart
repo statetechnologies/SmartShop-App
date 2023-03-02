@@ -61,10 +61,12 @@ class Themes {
   static final light = ThemeData(
       // primaryColor: ,
       brightness: Brightness.light,
+      appBarTheme: AppBarTheme(centerTitle: true),
       backgroundColor: primary3LightMode);
   static final dark = ThemeData(
       // primaryColor: primary2,
       brightness: Brightness.dark,
+      appBarTheme: AppBarTheme(centerTitle: true),
       backgroundColor: primary3DarkMode);
 }
 
