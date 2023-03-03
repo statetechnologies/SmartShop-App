@@ -4,5 +4,5 @@ An App that gives a user the ability to track their Shop's Sales and Products. T
 
 The Web App was created by mrshanas https://github.com/mrshanas .
 
-Link to the web app: https://smartshop.mrshanas.com
+Link to the web app: https://smartshop.mrshanas.me
 
