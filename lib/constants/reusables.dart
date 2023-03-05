@@ -1,4 +1,4 @@
-var apiLink='https://smartshop.mrshanas.com/api';
+var apiLink='https://smartshop.mrshanas.me/api';
 
 var infoText = 'Smart Shop is a mobile and web-based application that helps small and medium-sized businesses manage their inventory and sales operations. The app is designed to be user-friendly and customizable to suit the unique needs of each business.';
 var featuresText = '1.  Inventory Management: The app allows businesses to track their inventory levels in real-time, set up alerts for low stock, and reorder items when needed. Users can also add new products, update product information, and manage their suppliers.\n'
